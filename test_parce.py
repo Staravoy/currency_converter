@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
 import re
 
 # URL сторінки
@@ -14,6 +16,9 @@ if response.status_code == 200:
     soup = BeautifulSoup(response.text, 'html.parser')
     # Знаходимо елемент з певним класом (замість "class_name" вставте потрібний клас)
     class_name = "dKDsVV"  # Замініть на потрібний клас
+    # class_name ="bKmKjX"  # Замініть на потрібний клас
+    #
+
     element_with_class = soup.find_all(class_=class_name)
     if element_with_class:
         # Отримуємо текстове значення елементу
@@ -24,8 +29,11 @@ if response.status_code == 200:
         else:
             print(f"Елементи з класом '{class_name}' не знайдено на сторінці.")
 
-    table = soup.find('table', class_= 'sc-1x32wa2-1')
-    print(table)
+        pattern = re.compile(r"USD(\d+,\d+)")
+        usd_values = [re.search(pattern, item).group(1) for item in list_all_value if re.search(pattern, item)]
+        print(usd_values)
+# table = soup.find('table', class_='sc-1x32wa2-1')
+# print(table)
 else:
     print("Не вдалося отримати сторінку")
 
