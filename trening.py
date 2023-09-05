@@ -4,8 +4,14 @@ list_all = ['USD37,4250-0.0738,1000-0.0536,56860.00', 'EUR40,6000-0.1541,4900-0.
 
 one_item = 'USD37,4250-0.0738,1000-0.0536,56860.00'
 
+x = 'USD'
 pattern = re.compile(r"USD(\d+,\d+)")
 
 usd_values = [re.search(pattern, item).group(1) for item in list_all if re.search(pattern, item)]
 
-print(usd_values)
+list_float = []
+for i in usd_values:
+    list_float.append(float(i.replace(',','.')))
+total = sum(list_float)
+midl_num = total/len(list_float)
+print(midl_num)
