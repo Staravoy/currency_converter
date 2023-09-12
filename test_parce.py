@@ -2,15 +2,18 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-def average(pattern, list_all):
-    usd_values = [re.search(pattern, item).group(1) for item in list_all if re.search(pattern, item)]
 
-    list_float = []
-    for i in usd_values:
-        list_float.append(float(i.replace(',', '.')))
-    total = sum(list_float)
-    midl_num = total / len(list_float)
-    return midl_num
+# def average(pattern, list_all):
+#     usd_values = [re.search(pattern, item).group(1) for item in list_all if re.search(pattern, item)]
+#
+#     list_float = []
+#     for i in usd_values:
+#         list_float.append(float(i.replace(',', '.')))
+#     total = sum(list_float)
+#     midl_num = total / len(list_float)
+#     return midl_num
+
+
 def middle_num(usd_values):
     total = []
     for i in usd_values:
@@ -32,10 +35,8 @@ if response.status_code == 200:
     soup = BeautifulSoup(response.text, 'html.parser')
     # Знаходимо елемент з певним класом (замість "class_name" вставте потрібний клас)
     class_name = "dKDsVV"  # Замініть на потрібний клас
-    # class_name ="bKmKjX"  # Замініть на потрібний клас
-    #
-
     element_with_class = soup.find_all(class_=class_name)
+
     if element_with_class:
         # Отримуємо текстове значення елементу
         list_all_value = []
@@ -45,19 +46,28 @@ if response.status_code == 200:
         else:
             pass
             # print(f"Елементи з класом '{class_name}' не знайдено на сторінці.")
-    currency = input('Enter currency (USD or EUR):')
-    if currency == 'USD':
-        pattern = re.compile(r"USD(\d+,\d+)")
-    elif currency == 'EUR':
-        pattern = re.compile(r"EUR(\d+,\d+)")
-    else:
-        print('This currency not find.')
+    # Отримуємо валюту з якою будемо працювати
+    # currency = input('Enter currency (USD or EUR):')
+    # # перевіряємо вибір, обрізаємо все зайве і присвоюємо до перемінної
+    # if currency == 'USD':
+    #     pattern = re.compile(r"USD(\d+,\d+)")
+    # elif currency == 'EUR':
+    #     pattern = re.compile(r"EUR(\d+,\d+)")
+    # else:
+    #     print('This currency not find.')
+    # # отримуємо кількість валюти яку треба обчислити
+    # numbers_money = input('Enter numbers:')
+    # # відправляємо середнє значення
+    # average_num = average(pattern, list_all_value)
+    # # здійснюємо обрахунок
+    # result = int(numbers_money) * average_num
+    # # виводимо результат
+    # print(f'Result of converter: {round(result, 2)}')
 
-    numbers_money = input('Enter numbers:')
-    average_num = average(pattern, list_all_value)
-    result = int(numbers_money) * average_num
-    print(f'Result of converter: {round(result, 2)}')
+    # ще один варіант цієї програми
+    # Визначаємо тип валюти з якою працюємо
     type_current = input('Enter USD or EUR:')
+    # Здійснюємо перевірку вибраного елементу і відправлямо результат
     if type_current == 'USD':
         pattern = re.compile(r"USD(\d+,\d+)")
         usd_values = [re.search(pattern, item).group(1) for item in list_all_value if re.search(pattern, item)]
