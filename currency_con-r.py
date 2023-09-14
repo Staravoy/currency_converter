@@ -49,11 +49,13 @@ def on_dropdown_select(): # Функція, яка викликається пр
         pattern = re.compile(r"USD(\d+,\d+)")
         usd_values = [re.search(pattern, item).group(1) for item in list_all_value if re.search(pattern, item)]
         middle = middle_num(usd_values)
+        image_label.config(image=flag_usd)
         return middle
     elif selected_item == "EUR":
         pattern = re.compile(r"EUR(\d+,\d+)")
         eur_values = [re.search(pattern, item).group(1) for item in list_all_value if re.search(pattern, item)]
         middle = middle_num(eur_values)
+        image_label.config(image=flag_eur)
         return middle
 
 
@@ -71,7 +73,7 @@ def calculate_result():
 # Створення головного вікна
 root = Tk()
 root.title("Конвертер валют")
-root.geometry("+400+200")
+root.geometry("380x140+400+200")
 
 # Створення випадаючого списку
 currents =["USD", "EUR"]
@@ -83,9 +85,13 @@ dropdown.grid(row=2, column=1)
 dropdown.bind("<<ComboboxSelected>>", lambda event=None: on_dropdown_select)
 
 # Малюнок
-# flag = StringVar()
-# flag_img = ttk.Label(root, image=flag)
-# flag_img.grid(row=2, column=2)
+flag_usd = PhotoImage(file="united-states.png")
+flag_eur = PhotoImage(file="european-union.png")
+flag_uah = PhotoImage(file="ukraine.png")
+
+image_label = ttk.Label(root, image=flag_usd)
+image_label.grid(row=2, column=2)
+
 
 # Поле для введення цифр
 input_label = ttk.Label(root, text="Введіть кількість:")
@@ -95,10 +101,10 @@ input_entry.grid(row=4, column=1)
 
 # Кнопка зі стрілочками
 calculate_button = ttk.Button(root, text="Обчислити", command=calculate_result)
-calculate_button.grid(row=3, column=2, sticky=N)
+calculate_button.grid(row=3, column=2, sticky=W)
 
 # Надпис UAH
-uah_label = ttk.Label(root, text="UAH:")
+uah_label = ttk.Label(root, image=flag_uah, text="UAH:", compound="left")
 uah_label.grid(row=6, column=1, sticky=E)
 
 # Результат обчислення
