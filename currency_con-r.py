@@ -4,7 +4,6 @@ import re
 from bs4 import BeautifulSoup
 import requests
 
-
 # URL сторінки
 url = "https://minfin.com.ua/ua/currency/"
 
@@ -40,8 +39,7 @@ def middle_num(usd_values):
     middle = sum_all_num/len(total)
     return round(middle, 2)
 
-
-def on_dropdown_select(): # Функція, яка викликається при виборі елемента у випадаючому списку
+def on_dropdown_select(event=None): # Функція, яка викликається при виборі елемента у випадаючому списку
     # отримуємо результат вибору з списку валют
     selected_item = dropdown_var.get()
     # Здійснюємо перевірку, обрізання та отримання єдиного середнього значення
@@ -50,14 +48,12 @@ def on_dropdown_select(): # Функція, яка викликається пр
         usd_values = [re.search(pattern, item).group(1) for item in list_all_value if re.search(pattern, item)]
         middle = middle_num(usd_values)
         image_label.config(image=flag_usd)
-        return middle
     elif selected_item == "EUR":
         pattern = re.compile(r"EUR(\d+,\d+)")
         eur_values = [re.search(pattern, item).group(1) for item in list_all_value if re.search(pattern, item)]
         middle = middle_num(eur_values)
         image_label.config(image=flag_eur)
-        return middle
-
+    return middle
 
 def calculate_result():
     # Отримайте значення введених цифр і виконайте обчислення
@@ -70,19 +66,20 @@ def calculate_result():
         result_var.set(result)
     except ValueError:
         result_var.set("Помилка: Введіть число")
+
 # Створення головного вікна
 root = Tk()
 root.title("Конвертер валют")
 root.geometry("380x140+400+200")
 
 # Створення випадаючого списку
-currents =["USD", "EUR"]
+currents = ["USD", "EUR"]
 dropdown_var = StringVar(value=currents[0])
 dropdown_label = ttk.Label(root, text="Оберіть валюту:")
 dropdown_label.grid(row=1, column=1)
 dropdown = ttk.Combobox(root, textvariable=dropdown_var, values=currents)
 dropdown.grid(row=2, column=1)
-dropdown.bind("<<ComboboxSelected>>", lambda event=None: on_dropdown_select)
+dropdown.bind("<<ComboboxSelected>>", on_dropdown_select)
 
 # Малюнок
 flag_usd = PhotoImage(file="united-states.png")
@@ -91,7 +88,6 @@ flag_uah = PhotoImage(file="ukraine.png")
 
 image_label = ttk.Label(root, image=flag_usd)
 image_label.grid(row=2, column=2)
-
 
 # Поле для введення цифр
 input_label = ttk.Label(root, text="Введіть кількість:")
